@@ -1,7 +1,7 @@
 #include <iostream>
 #include "stack.hpp"
 
-using namespace StackLib;
+using namespace stack_lib;
 
 int main() {
     Stack<int> st;
@@ -13,14 +13,29 @@ int main() {
     Stack<int> st2;
     st2 = st;
 
+    for (auto& x: st2) {
+        std::cout << x << " ";
+    }
+    std::cout << std::endl;
+
     st2.pop();
-    std::cout << st2.peek() << std::endl;
+    std::cout << st2.top() << std::endl;
+
+    for (auto& x: st2) {
+        std::cout << x << " ";
+    }
+    std::cout << std::endl;
     st2.pop();
-    std::cout << st2.peek() << std::endl;
+    std::cout << st2.top() << std::endl;
+    for (auto& x: st2) {
+        std::cout << x << " ";
+    }
+    std::cout << std::endl;
+
     st2.pop();
-    std::cout << st2.peek() << std::endl;
-    st2.pop();
-    std::cout << st2.peek() << std::endl;
+    std::cout << st2.top() << std::endl;
+//    st2.pop();
+    std::cout << st2.top() << std::endl;
 
     st2.push(a);
 
@@ -29,6 +44,8 @@ int main() {
 //        std::cout << x << std::endl;
 //    }
     std::cout << "--------" << std::endl;
+
+
 
     for (auto& x: st2) {
         std::cout << x << std::endl;

@@ -1,93 +1,102 @@
 #pragma once
 
 #include <algorithm>
+#include <stdexcept>
 
-#define START_CAPACITY 1
 
-namespace StackLib {
+#define START_CAPACITY 2
+
+namespace stack_lib {
     template<class T>
     class Stack {
     private:
-        size_t _capacity{START_CAPACITY};
-        size_t _size{0};
-        T* data;
+        size_t capacity_{START_CAPACITY};
+        size_t size_{0};
+        T* data_;
 
         void checkAndRealloc() {
-            if (_size == _capacity) {
-                _capacity *= 2;
-                T* newData = new T[_capacity];
-                std::copy(data, data + _size, newData);
-                delete[] data;
-                data = newData;
+            if (size_ == capacity_) {
+                capacity_ *= 2;
+                T* new_data_ = new T[capacity_];
+                std::copy(data_, data_ + size_, new_data_);
+                delete[] data_;
+                data_ = new_data_;
+            }
+        }
+
+        void checkNonempty() const {
+            if (empty()) {
+                throw std::out_of_range("Stack is empty and top or pop method was called");
             }
         }
 
     public:
         Stack() {
-            data = new T[_capacity];
+            data_ = new T[capacity_];
         }
 
         Stack(const Stack& other)
-                : _capacity(other._capacity),
-                  _size(other._size) {
-            data = new T[_capacity];
-            std::copy(other.data, other.data + other._size, data);
+                : capacity_(other.capacity_),
+                  size_(other.size_) {
+            data_ = new T[capacity_];
+            std::copy(other.data_, other.data_ + other.size_, data_);
         }
 
         Stack(Stack&& other) noexcept
-                : _capacity(other._capacity),
-                  _size(other._size),
-                  data(std::exchange(other.data, nullptr)) {}
+                : capacity_(other.capacity_),
+                  size_(other.size_),
+                  data_(std::exchange(other.data_, nullptr)) {}
 
-        Stack& operator=(Stack other) noexcept {
-            std::swap(_capacity, other._capacity);
-            std::swap(_size, other._size);
-            std::swap(data, other.data);
+        Stack& operator=(const Stack& other) {
+            *this = Stack(other);
+            return *this;
+        }
+
+        Stack& operator=(Stack&& other) noexcept {
+            std::swap(capacity_, other.capacity_);
+            std::swap(size_, other.size_);
+            data_ = std::exchange(other.data_, nullptr);
             return *this;
         }
 
         ~Stack() noexcept {
-            delete[] data;
-            data = nullptr;
-            _capacity = 0;
-            _size = 0;
+            delete[] data_;
+            data_ = nullptr;
+            capacity_ = 0;
+            size_ = 0;
         }
 
-        size_t size() const noexcept {
-            return _size;
+        [[nodiscard]] size_t size() const noexcept {
+            return size_;
         }
 
-        bool empty() const {
-            return _size == 0;
+        [[nodiscard]] bool empty() const {
+            return size_ == 0;
         }
 
         template<class U>
         void push(U&& elem) {
             checkAndRealloc();
-            data[_size] = elem;
-            _size++;
+            data_[size_] = elem;
+            size_++;
         }
 
         void pop() {
-            if (!empty()) {
-                _size--;
-            }
+            checkNonempty();
+            size_--;
         }
 
-        T peek() const {
-            if (!empty()) {
-                return data[_size - 1];
-            } else {
-                return {};
-            }
+        T top() const {
+            checkNonempty();
+            return data_[size_ - 1];
         }
 
-        T* begin() const {
-            return data;
+        const T* begin() const {
+            return data_;
         }
 
-        T* end() const {
-            return data + _size;
+        const T* end() const {
+            return data_ + size_;
         }
     };
 }
