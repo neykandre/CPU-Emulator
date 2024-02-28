@@ -3,4 +3,4 @@ project(emulatorCPU)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_subdirectory(StackLib)
+add_subdirectory(deps/StackLib)

@@ -4,23 +4,26 @@
 #include <stdexcept>
 
 
-#define START_CAPACITY 2
-
 namespace stack_lib {
-    template<class T>
+    template<typename T>
     class Stack {
+    public:
+        using value_type = T;
+        using pointer = T*;
+        using size_type = size_t;
     private:
-        size_t capacity_{START_CAPACITY};
-        size_t size_{0};
-        T* data_;
+        size_type capacity_{start_capacity_};
+        size_type size_{0};
+        pointer data_;
+        static constexpr int start_capacity_ = 2;
 
         void checkAndRealloc() {
             if (size_ == capacity_) {
                 capacity_ *= 2;
-                T* new_data_ = new T[capacity_];
-                std::copy(data_, data_ + size_, new_data_);
+                pointer new_data = new T[capacity_];
+                std::copy(data_, data_ + size_, new_data);
                 delete[] data_;
-                data_ = new_data_;
+                data_ = new_data;
             }
         }
 
@@ -66,7 +69,7 @@ namespace stack_lib {
             size_ = 0;
         }
 
-        [[nodiscard]] size_t size() const noexcept {
+        [[nodiscard]] size_type size() const noexcept {
             return size_;
         }
 
@@ -74,10 +77,15 @@ namespace stack_lib {
             return size_ == 0;
         }
 
-        template<class U>
-        void push(U&& elem) {
+        void push(const value_type& elem) {
             checkAndRealloc();
             data_[size_] = elem;
+            size_++;
+        }
+
+        void push(value_type&& elem) {
+            checkAndRealloc();
+            data_[size_] = std::move(elem);
             size_++;
         }
 
@@ -86,17 +94,9 @@ namespace stack_lib {
             size_--;
         }
 
-        T top() const {
+        value_type top() {
             checkNonempty();
             return data_[size_ - 1];
-        }
-
-        const T* begin() const {
-            return data_;
-        }
-
-        const T* end() const {
-            return data_ + size_;
         }
     };
 }

@@ -134,38 +134,3 @@ TEST(Methods, empty) {
     a.pop();
     EXPECT_TRUE(a.empty());
 }
-
-TEST(Pointers, begin) {
-    stack_lib::Stack<int> a;
-    testFilling(a);
-    EXPECT_NO_THROW(a.begin());
-}
-
-TEST(Pointers, end) {
-    stack_lib::Stack<int> a;
-    testFilling(a);
-    EXPECT_NO_THROW(a.end());
-}
-
-TEST(Pointers, iteration) {
-    stack_lib::Stack<int> a;
-    testFilling(a);
-    EXPECT_NO_THROW(
-            for (auto x: a) {}
-    );
-    EXPECT_NO_THROW(
-            for (auto& x: a) {}
-    );
-
-    int i = 0;
-    for (auto &x : a) {
-        EXPECT_EQ(x, i);
-        i++;
-    }
-
-    i = 0;
-    for (auto x : a) {
-        EXPECT_EQ(x, i);
-        i++;
-    }
-}
