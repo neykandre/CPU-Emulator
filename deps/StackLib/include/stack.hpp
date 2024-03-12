@@ -5,22 +5,28 @@
 
 
 namespace stack_lib {
+    struct empty_access : public std::out_of_range {
+        explicit empty_access(const char* message)
+        : std::out_of_range(message),
+          message(message) {}
+    private:
+        const char* message;
+    };
+
     template<typename T>
     class Stack {
     public:
-        using value_type = T;
-        using pointer = T*;
         using size_type = size_t;
     private:
         size_type capacity_{start_capacity_};
         size_type size_{0};
-        pointer data_;
+        T* data_;
         static constexpr int start_capacity_ = 2;
 
         void checkAndRealloc() {
             if (size_ == capacity_) {
                 capacity_ *= 2;
-                pointer new_data = new T[capacity_];
+                auto new_data = new T[capacity_];
                 std::copy(data_, data_ + size_, new_data);
                 delete[] data_;
                 data_ = new_data;
@@ -28,8 +34,8 @@ namespace stack_lib {
         }
 
         void checkNonempty() const {
-            if (empty()) {
-                throw std::out_of_range("Stack is empty and top or pop method was called");
+            if (isEmpty()) {
+                throw empty_access("Access to empty stack");
             }
         }
 
@@ -73,17 +79,17 @@ namespace stack_lib {
             return size_;
         }
 
-        [[nodiscard]] bool empty() const {
+        [[nodiscard]] bool isEmpty() const {
             return size_ == 0;
         }
 
-        void push(const value_type& elem) {
+        void push(const T& elem) {
             checkAndRealloc();
             data_[size_] = elem;
             size_++;
         }
 
-        void push(value_type&& elem) {
+        void push(T&& elem) {
             checkAndRealloc();
             data_[size_] = std::move(elem);
             size_++;
@@ -94,7 +100,7 @@ namespace stack_lib {
             size_--;
         }
 
-        value_type top() {
+        T& top() {
             checkNonempty();
             return data_[size_ - 1];
         }
