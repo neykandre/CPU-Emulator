@@ -1,8 +1,10 @@
+#include <utility>
+
 #include "../include/div.hpp"
 
 namespace cpu_emulator::operations {
     Div::Div(std::shared_ptr<cpu_emulator::CpuState> state_ptr) {
-        state_ptr_ = state_ptr;
+        state_ptr_ = std::move(state_ptr);
     }
 
     void Div::doIt() {

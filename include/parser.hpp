@@ -2,43 +2,55 @@
 
 #include <string>
 #include <stdexcept>
+#include <fstream>
+#include <regex>
 #include "state.hpp"
 #include "token.hpp"
-#include "../operations/include/operationBuilder.hpp"
 
 namespace cpu_emulator {
-
-    struct too_few_args : public std::logic_error {
-        explicit too_few_args(size_t, int, std::string&);
-    private:
-        std::string message;
-    };
-
-    struct unknown_command : public std::logic_error {
-        explicit unknown_command(const std::string&);
-
-    private:
-        std::string message;
-    };
 
     class Parser {
     private:
         std::string file_path_;
-        CpuState start_state_;
-        std::vector<std::unique_ptr<operations::baseOperation>> operations_tape_;
-        bool was_opened_{false};
+        std::ifstream in_;
+        size_t file_line_pos_{0};
 
-        ParsedLine parseLine(const std::string&, size_t);
+        std::map<std::string, commandType> mapped_command_type{
+                {"push",  commandType::push},
+                {"pop",   commandType::pop},
+                {"pushr", commandType::pushR},
+                {"popr",  commandType::popR},
+                {"add",   commandType::add},
+                {"sub",   commandType::sub},
+                {"mul",   commandType::mul},
+                {"div",   commandType::div},
+                {"out",   commandType::out},
+                {"in",    commandType::in},
+                {"ret",   commandType::ret},
+                {"begin", commandType::begin},
+                {"end",   commandType::end}
+        };
 
-        void parseFile();
+        std::map<argType, std::regex> mapped_arg_regexes{
+                {argType::reg,   std::regex(R"(e[a-d]x)")},
+                {argType::value, std::regex(R"(-?\d+)")},
+                {argType::label, std::regex(R"(\w+:)")}
+        };
+
+        std::map<std::string, enum_registers> mapped_registers{
+                {"eax", enum_registers::eax},
+                {"ebx", enum_registers::ebx},
+                {"ecx", enum_registers::ecx},
+                {"edx", enum_registers::edx}
+        };
 
     public:
 
-        void setFilePath(const std::string&);
+        Parser() = delete;
 
-        void setFilePath(std::string&&);
+        Parser(const std::string&); //NOLINT
 
-        std::vector<std::unique_ptr<operations::baseOperation>>& getOperations();
+        Instruction getInstruction();
 
     };
 }

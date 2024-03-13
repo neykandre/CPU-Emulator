@@ -1,8 +1,10 @@
+#include <utility>
+
 #include "../include/mul.hpp"
 
 namespace cpu_emulator::operations {
     Mul::Mul(std::shared_ptr<cpu_emulator::CpuState> state_ptr) {
-        state_ptr_ = state_ptr;
+        state_ptr_ = std::move(state_ptr);
     }
 
     void Mul::doIt() {

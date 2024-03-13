@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include "settings.hpp"
 #include "stack.hpp"
 
@@ -8,21 +9,17 @@ namespace cpu_emulator {
         eax,
         ebx,
         ecx,
-        edx
-    };
-
-    struct Registers {
-        register_type EAX;
-        register_type EBX;
-        register_type ECX;
-        register_type EDX;
+        edx,
+        _count
     };
 
     struct CpuState {
-        Registers registers;
+        std::array<register_type, static_cast<size_t>(enum_registers::_count)> registers;
 
         size_t head;
 
         stack_lib::Stack<value_type> stack;
+
+        bool is_running_;
     };
 }

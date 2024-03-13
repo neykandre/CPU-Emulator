@@ -53,6 +53,8 @@ namespace cpu_emulator {
                             cur_iter->str().pop_back();
                             cur_arg.arg = cur_iter->str();
                             break;
+                        case argType::unknown:
+                            break;
                     }
                     break;
                 }

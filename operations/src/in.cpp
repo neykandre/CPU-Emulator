@@ -1,9 +1,10 @@
 #include <iostream>
+#include <utility>
 #include "../include/in.hpp"
 
 namespace cpu_emulator::operations {
     In::In(std::shared_ptr<cpu_emulator::CpuState> state_ptr) {
-        state_ptr_ = state_ptr;
+        state_ptr_ = std::move(state_ptr);
     }
 
     void In::doIt() {

@@ -1,8 +1,17 @@
+<<<<<<< HEAD
+=======
+#include <utility>
+
+>>>>>>> 4251488 (base commands (fibonacci))
 #include "../include/add.hpp"
 
 namespace cpu_emulator::operations {
     Add::Add(std::shared_ptr<cpu_emulator::CpuState> state_ptr) {
+<<<<<<< HEAD
         state_ptr_ = state_ptr;
+=======
+        state_ptr_ = std::move(state_ptr);
+>>>>>>> 4251488 (base commands (fibonacci))
     }
 
     void Add::doIt() {

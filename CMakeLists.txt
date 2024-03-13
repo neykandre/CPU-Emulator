@@ -8,9 +8,7 @@ add_subdirectory(deps/StackLib)
 set(SOURCES src/cpu.cpp
         src/parser.cpp
         src/preprocessor.cpp
-        src/exceptions.cpp
         main.cpp
-#        sandbox_regex.cpp
 )
 
 file(GLOB OPERATIONS operations/src/*.cpp)
