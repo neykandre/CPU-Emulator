@@ -1,0 +1,15 @@
+#pragma once
+
+#include "baseOperation.hpp"
+#include "pushStack.hpp"
+#include "popStack.hpp"
+#include "pushRegister.hpp"
+#include "popRegister.hpp"
+#include "add.hpp"
+#include "sub.hpp"
+#include "mul.hpp"
+#include "div.hpp"
+#include "in.hpp"
+#include "out.hpp"
+#include "begin.hpp"
+#include "end.hpp"

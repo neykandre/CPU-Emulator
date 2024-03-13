@@ -1,0 +1,355 @@
+begin
+
+push 0
+push 1
+popr ebx
+popr eax
+
+pushr eax
+out
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+pushr eax
+pushr ebx
+add
+pushr ebx
+popr eax
+popr ebx
+pushr ebx
+out
+
+end

@@ -48,7 +48,7 @@ TEST(Methods, pushThrow) {
 
 TEST(Methods, peekThrow) {
     stack_lib::Stack<int> a;
-    EXPECT_THROW(a.top(), std::out_of_range);
+    EXPECT_THROW(a.top(), stack_lib::empty_access);
     int b = 34;
     a.push(12);
     EXPECT_NO_THROW(a.top());
@@ -58,13 +58,13 @@ TEST(Methods, peekThrow) {
 
 TEST(Methods, popThrow) {
     stack_lib::Stack<int> a;
-    EXPECT_THROW(a.pop(), std::out_of_range);
+    EXPECT_THROW(a.pop(), stack_lib::empty_access);
     int b = 34;
     a.push(12);
     EXPECT_NO_THROW(a.pop());
     a.push(b);
     EXPECT_NO_THROW(a.pop());
-    EXPECT_THROW(a.pop(), std::out_of_range);
+    EXPECT_THROW(a.pop(), stack_lib::empty_access);
 }
 
 TEST(Methods, pushPeekValue) {
@@ -120,17 +120,17 @@ TEST(Methods, size) {
     EXPECT_EQ(a.size(), 17);
 }
 
-TEST(Methods, empty) {
+TEST(Methods, isEmpty) {
     stack_lib::Stack<int> a;
-    EXPECT_TRUE(a.empty());
+    EXPECT_TRUE(a.isEmpty());
 
     a.push(1);
-    EXPECT_FALSE(a.empty());
+    EXPECT_FALSE(a.isEmpty());
     a.push(1);
-    EXPECT_FALSE(a.empty());
+    EXPECT_FALSE(a.isEmpty());
 
     a.pop();
-    EXPECT_FALSE(a.empty());
+    EXPECT_FALSE(a.isEmpty());
     a.pop();
-    EXPECT_TRUE(a.empty());
+    EXPECT_TRUE(a.isEmpty());
 }
