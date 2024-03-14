@@ -8,10 +8,13 @@ add_subdirectory(deps/StackLib)
 set(SOURCES src/cpu.cpp
         src/parser.cpp
         src/preprocessor.cpp
-        operations/src/pushStack.cpp
+        src/exceptions.cpp
         main.cpp
+#        sandbox_regex.cpp
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+file(GLOB OPERATIONS operations/src/*.cpp)
+
+add_executable(${PROJECT_NAME} ${SOURCES} ${OPERATIONS})
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 target_link_libraries(${PROJECT_NAME} PRIVATE Stack)
