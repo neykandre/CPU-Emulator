@@ -4,12 +4,13 @@
 #include <stdexcept>
 
 namespace cpu_emulator {
-
     struct preprocess_error : public std::logic_error {
         explicit preprocess_error(const std::string&);
 
     protected:
-        std::string message_;
+        std::string message;
+
+
     };
 
     struct too_many_args : public preprocess_error {

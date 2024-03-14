@@ -6,9 +6,10 @@ namespace cpu_emulator {
     template<class T>
     class ExceptBuilder {
     private:
-        size_t line_pos_{0};
         std::string src_line_;
+        size_t line_pos_{0};
         std::string note_;
+
     public:
         ExceptBuilder& setLineText(const std::string& line) {
             src_line_ = line;
@@ -25,14 +26,13 @@ namespace cpu_emulator {
             return *this;
         }
 
-        const T& get() {
-            std::string error_message;
+        T get() {
+            std::string message;
             if (line_pos_) {
-                error_message += std::to_string(line_pos_) + " |\t" + src_line_ + "\n";
+                message += std::to_string(line_pos_) + " |\t" + src_line_ + "\n";
             }
-
-            error_message += note_;
-            return T(error_message);
+            message += note_;
+            return T(message);
         }
     };
 }

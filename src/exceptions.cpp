@@ -1,10 +1,9 @@
 #include "../include/exceptions.hpp"
 
 namespace cpu_emulator {
-
     preprocess_error::preprocess_error(const std::string& message)
             : std::logic_error(message),
-              message_(message) {}
+              message(message) {}
 
     too_many_args::too_many_args(const std::string& message)
             : preprocess_error(message) {}
