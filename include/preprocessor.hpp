@@ -8,42 +8,17 @@
 #include "settings.hpp"
 #include "state.hpp"
 #include "token.hpp"
+#include "exceptBuilder.hpp"
 
 namespace cpu_emulator {
-
-    struct too_many_args : public std::logic_error {
-        explicit too_many_args(const std::string&);
-
-    private:
-        std::string message;
-    };
-
-    struct too_few_args : public std::logic_error {
-        explicit too_few_args(const std::string&);
-
-    private:
-        std::string message;
-    };
-
-    struct unknown_command : public std::logic_error {
-        explicit unknown_command(const std::string&);
-
-    private:
-        std::string message;
-    };
-
-    struct invalid_argument : public std::invalid_argument {
-        explicit invalid_argument(const std::string&);
-
-    private:
-        std::string message;
-    };
-
     class Preprocessor {
     private:
         std::string file_path_;
         std::vector<std::shared_ptr<operations::baseOperation>> operations_tape_;
         std::shared_ptr<CpuState> ptr_state_;
+        bool begin_was_{false};
+        bool end_was_{false};
+        size_t end_pos_{0};
 
         std::map<commandType, size_t> required_num_of_args{
                 {commandType::push,  1},
