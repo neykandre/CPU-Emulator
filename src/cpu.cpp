@@ -1,14 +1,10 @@
 #include <iostream>
 #include "../include/cpu.hpp"
+#include <binSerializer.hpp>
 
 namespace cpu_emulator {
-
-    void Cpu::setFilePath(const std::string& path) {
-        file_path_ = path;
-    }
-
-    void Cpu::exec() {
-        Preprocessor preprocessor(file_path_);
+    void Cpu::exec(const std::string& file_path) {
+        Preprocessor preprocessor(file_path);
         try {
             preprocessor.process();
             successful_preprocessed_ = true;
@@ -30,6 +26,19 @@ namespace cpu_emulator {
                 ptr_state_->head++;
                 operations_tape_[ptr_state_->head]->doIt(ptr_state_);
             }
+        }
+    }
+
+    void Cpu::execBinary(const std::string& bin_path) {
+        Serializer serializer;
+        auto head_vec = serializer.deserialize(bin_path);
+        ptr_state_->head = head_vec.first;
+        operations_tape_ = head_vec.second;
+
+        operations_tape_[ptr_state_->head]->doIt(ptr_state_);
+        while (ptr_state_->is_running) {
+            ptr_state_->head++;
+            operations_tape_[ptr_state_->head]->doIt(ptr_state_);
         }
     }
 }

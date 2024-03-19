@@ -7,7 +7,7 @@
 #include "settings.hpp"
 
 namespace cpu_emulator {
-    enum class commandType {
+    enum class commandType : char {
         unknown,
         push,
         pop,

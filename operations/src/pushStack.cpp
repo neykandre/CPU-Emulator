@@ -7,7 +7,13 @@ namespace cpu_emulator::operations {
     }
 
     void Push::doIt(std::shared_ptr<cpu_emulator::CpuState> state_ptr) {
-        auto value = std::get<value_type>(instruction_.args[0].arg);
+        value_type value;
+        if (instruction_.args[0].type == argType::value) {
+            value = std::get<value_type>(instruction_.args[0].arg);
+        }
+        else {
+            value = std::get<size_t>(instruction_.args[0].arg);
+        }
         state_ptr->stack.push(value);
     }
 

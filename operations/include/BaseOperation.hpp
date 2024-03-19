@@ -18,6 +18,8 @@ namespace cpu_emulator::operations {
 
         Instruction& getInstruction();
 
+        size_t getReqArgsNum() const;
+
         [[nodiscard]] std::strong_ordering isArgsNumValid() const;
 
         [[nodiscard]] virtual bool isArgTypeValid() const { return true;};

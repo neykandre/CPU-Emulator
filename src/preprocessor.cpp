@@ -1,6 +1,31 @@
 #include "../include/preprocessor.hpp"
 
 namespace cpu_emulator {
+    std::map<commandType, std::function<Preprocessor::base_op_ptr()>> Preprocessor::make_operation = {
+            {commandType::unknown,   []() { return nullptr; }},
+            {commandType::push,      make_op_ptr<operations::Push>},
+            {commandType::pop,       make_op_ptr<operations::Pop>},
+            {commandType::pushR,     make_op_ptr<operations::PushR>},
+            {commandType::popR,      make_op_ptr<operations::PopR>},
+            {commandType::add,       make_op_ptr<operations::Add>},
+            {commandType::sub,       make_op_ptr<operations::Sub>},
+            {commandType::mul,       make_op_ptr<operations::Mul>},
+            {commandType::div,       make_op_ptr<operations::Div>},
+            {commandType::out,       make_op_ptr<operations::Out>},
+            {commandType::in,        make_op_ptr<operations::In>},
+            {commandType::begin,     make_op_ptr<operations::Begin>},
+            {commandType::end,       make_op_ptr<operations::End>},
+            {commandType::jump,      make_op_ptr<operations::Jump>},
+            {commandType::jumpEq,    make_op_ptr<operations::JumpEq>},
+            {commandType::jumpNe,    make_op_ptr<operations::JumpNe>},
+            {commandType::jumpGr,    make_op_ptr<operations::JumpGreat>},
+            {commandType::jumpGrEq,  make_op_ptr<operations::JumpGreatEq>},
+            {commandType::jumpLes,   make_op_ptr<operations::JumpLess>},
+            {commandType::jumpLesEq, make_op_ptr<operations::JumpLessEq>},
+            {commandType::call,      make_op_ptr<operations::Call>},
+            {commandType::ret,       make_op_ptr<operations::Ret>}
+    };
+
     Preprocessor::Preprocessor(const std::string& path)
             : file_path_(path) {}
 
@@ -13,7 +38,7 @@ namespace cpu_emulator {
                 //TODO exceptions
                 mapped_labels[std::get<std::string>(instruction.args[0].arg)] = operations_tape_.size();
             } else {
-                std::shared_ptr<operations::BaseOperation> new_operation = make_operation[instruction.type]();
+                base_op_ptr new_operation = make_operation[instruction.type]();
 
                 if (!new_operation) {
                     throw ExceptBuilder<unknown_command>()
@@ -96,12 +121,16 @@ namespace cpu_emulator {
         }
     }
 
-    std::vector<std::shared_ptr<operations::BaseOperation>>& Preprocessor::getOperations() {
+    Preprocessor::vec_op& Preprocessor::getOperations() {
         return operations_tape_;
     }
 
     size_t Preprocessor::getStartPos() const {
         return start_pos_;
+    }
+
+    Preprocessor::base_op_ptr Preprocessor::makeOperation(commandType type) {
+        return make_operation[type]();
     }
 
 

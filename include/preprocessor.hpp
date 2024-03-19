@@ -12,9 +12,11 @@
 
 namespace cpu_emulator {
     class Preprocessor {
+        using base_op_ptr = std::shared_ptr<operations::BaseOperation>;
+        using vec_op = std::vector<base_op_ptr>;
     private:
         std::string file_path_;
-        std::vector<std::shared_ptr<operations::BaseOperation>> operations_tape_;
+        vec_op operations_tape_;
         bool begin_was_{false};
         bool end_was_{false};
         size_t start_pos_{0};
@@ -23,34 +25,11 @@ namespace cpu_emulator {
         template<class T>
         static constexpr auto make_op_ptr = []() { return std::make_shared<T>(T()); };
 
-        std::map<commandType, std::function<std::shared_ptr<operations::BaseOperation>()>> make_operation{
-                {commandType::unknown,   []() { return nullptr; }},
-                {commandType::push,      make_op_ptr<operations::Push>},
-                {commandType::pop,       make_op_ptr<operations::Pop>},
-                {commandType::pushR,     make_op_ptr<operations::PushR>},
-                {commandType::popR,      make_op_ptr<operations::PopR>},
-                {commandType::add,       make_op_ptr<operations::Add>},
-                {commandType::sub,       make_op_ptr<operations::Sub>},
-                {commandType::mul,       make_op_ptr<operations::Mul>},
-                {commandType::div,       make_op_ptr<operations::Div>},
-                {commandType::out,       make_op_ptr<operations::Out>},
-                {commandType::in,        make_op_ptr<operations::In>},
-                {commandType::begin,     make_op_ptr<operations::Begin>},
-                {commandType::end,       make_op_ptr<operations::End>},
-                {commandType::jump,      make_op_ptr<operations::Jump>},
-                {commandType::jumpEq,    make_op_ptr<operations::JumpEq>},
-                {commandType::jumpNe,    make_op_ptr<operations::JumpNe>},
-                {commandType::jumpGr,    make_op_ptr<operations::JumpGreat>},
-                {commandType::jumpGrEq,  make_op_ptr<operations::JumpGreatEq>},
-                {commandType::jumpLes,   make_op_ptr<operations::JumpLess>},
-                {commandType::jumpLesEq, make_op_ptr<operations::JumpLessEq>},
-                {commandType::call,      make_op_ptr<operations::Call>},
-                {commandType::ret,       make_op_ptr<operations::Ret>}
-        };
+        static std::map<commandType, std::function<base_op_ptr()>> make_operation;
 
         std::map<std::string, size_t> mapped_labels;
 
-        std::multimap<std::string, std::shared_ptr<operations::BaseOperation>> jumps;
+        std::multimap<std::string, base_op_ptr> jumps;
     public:
         Preprocessor() = delete;
 
@@ -58,7 +37,9 @@ namespace cpu_emulator {
 
         void process();
 
-        std::vector<std::shared_ptr<operations::BaseOperation>>& getOperations();
+        vec_op& getOperations();
+
+        static base_op_ptr makeOperation(commandType);
 
         size_t getStartPos() const;
     };
