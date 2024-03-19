@@ -17,6 +17,9 @@ namespace cpu_emulator {
             std::cerr << "PREPROCESS ERROR" << std::endl;
             std::cerr << e.what() << std::endl;
         }
+        catch (const stack_lib::empty_access& e) {
+            std::cerr << e.what() << std::endl;
+        }
 
         if (successful_preprocessed_) {
             operations_tape_ = preprocessor.getOperations();

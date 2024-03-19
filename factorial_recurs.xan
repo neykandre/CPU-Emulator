@@ -1,0 +1,22 @@
+fac:
+    push 1
+    jae return
+    pop
+
+    popr eax
+    pushr eax
+
+    push 1
+    pushr eax
+    sub
+    call fac
+    mul
+    jmp return
+return:
+    ret
+
+begin
+in
+call fac
+out
+end

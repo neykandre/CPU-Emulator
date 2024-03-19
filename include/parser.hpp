@@ -28,16 +28,17 @@ namespace cpu_emulator {
                 {"div",   commandType::div},
                 {"out",   commandType::out},
                 {"in",    commandType::in},
-                {"ret",   commandType::ret},
                 {"begin", commandType::begin},
                 {"end",   commandType::end},
-                {"jmp", commandType::jump},
-                {"jeq", commandType::jumpEq},
-                {"jne", commandType::jumpNe},
-                {"ja", commandType::jumpGr},
-                {"jae", commandType::jumpGrEq},
-                {"jb", commandType::jumpLes},
-                {"jbe", commandType::jumpLesEq}
+                {"jmp",   commandType::jump},
+                {"jeq",   commandType::jumpEq},
+                {"jne",   commandType::jumpNe},
+                {"ja",    commandType::jumpGr},
+                {"jae",   commandType::jumpGrEq},
+                {"jb",    commandType::jumpLes},
+                {"jbe",   commandType::jumpLesEq},
+                {"ret",   commandType::ret},
+                {"call",   commandType::call}
         };
 
         std::map<std::string, enum_registers> mapped_registers{
@@ -48,19 +49,19 @@ namespace cpu_emulator {
         };
 
         std::vector<std::pair<std::regex, std::function<void(argToken&, const std::string&)>>> mapped_arg_regexes{
-                {std::regex(R"(-?\d*\.?\d+)"),    [](auto& arg_token, auto& s) {
+                {std::regex(R"(-?\d*\.?\d+)"), [](auto& arg_token, auto& s) {
                     arg_token.type = argType::value;
                     arg_token.arg = std::stoll(s);
                 }},
-                {std::regex(R"(e[a-d]x)"), [&](auto& arg_token, auto& s) {
+                {std::regex(R"(e[a-d]x)"),     [&](auto& arg_token, auto& s) {
                     arg_token.type = argType::reg;
                     arg_token.arg = mapped_registers[s];
                 }},
-                {std::regex(R"(\w+)"),        [](auto& arg_token, auto& s) {
+                {std::regex(R"(\w+)"),         [](auto& arg_token, auto& s) {
                     arg_token.type = argType::label;
                     arg_token.arg = s;
                 }},
-                {std::regex(R"(.+)"),         [](auto& arg_token, auto& s) {
+                {std::regex(R"(.+)"),          [](auto& arg_token, auto& s) {
                     arg_token.type = argType::unknown;
                 }}
         };

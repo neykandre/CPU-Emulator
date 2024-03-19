@@ -20,6 +20,8 @@ namespace cpu_emulator {
 
         stack_lib::Stack<value_type> stack;
 
+        stack_lib::Stack<std::pair<size_t, size_t>> call_stack;
+
         bool is_running;
     };
 }

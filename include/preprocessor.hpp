@@ -38,12 +38,14 @@ namespace cpu_emulator {
                 {commandType::begin,     make_op_ptr<operations::Begin>},
                 {commandType::end,       make_op_ptr<operations::End>},
                 {commandType::jump,      make_op_ptr<operations::Jump>},
-                {commandType::jumpEq,      make_op_ptr<operations::JumpEq>},
+                {commandType::jumpEq,    make_op_ptr<operations::JumpEq>},
                 {commandType::jumpNe,    make_op_ptr<operations::JumpNe>},
                 {commandType::jumpGr,    make_op_ptr<operations::JumpGreat>},
                 {commandType::jumpGrEq,  make_op_ptr<operations::JumpGreatEq>},
                 {commandType::jumpLes,   make_op_ptr<operations::JumpLess>},
-                {commandType::jumpLesEq, make_op_ptr<operations::JumpLessEq>}
+                {commandType::jumpLesEq, make_op_ptr<operations::JumpLessEq>},
+                {commandType::call,      make_op_ptr<operations::Call>},
+                {commandType::ret,       make_op_ptr<operations::Ret>}
         };
 
         std::map<std::string, size_t> mapped_labels;

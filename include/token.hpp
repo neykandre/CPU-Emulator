@@ -19,7 +19,6 @@ namespace cpu_emulator {
         div,
         out,
         in,
-        ret,
         label,
         begin,
         end,
@@ -30,6 +29,8 @@ namespace cpu_emulator {
         jumpGrEq,
         jumpLes,
         jumpLesEq,
+        call,
+        ret,
         eof
     };
 

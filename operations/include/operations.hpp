@@ -20,3 +20,5 @@
 #include "jumpGreatEq.hpp"
 #include "jumpLess.hpp"
 #include "jumpLessEq.hpp"
+#include "call.hpp"
+#include "ret.hpp"

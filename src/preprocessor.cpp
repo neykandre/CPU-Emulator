@@ -50,7 +50,7 @@ namespace cpu_emulator {
                     end_pos_ = operations_tape_.size() - 1;
                     end_was_ = true;
                 } else if (instruction.type >= commandType::jump &&
-                           instruction.type <= commandType::jumpLesEq) {
+                           instruction.type <= commandType::call) {
                     std::string s = std::get<std::string>(new_operation->getInstruction().args[0].arg);
                     jumps.insert(std::make_pair(s, new_operation));
                 }
