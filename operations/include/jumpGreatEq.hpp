@@ -1,12 +1,11 @@
 #pragma once
 
-#include "BaseOperation.hpp"
+#include "jump.hpp"
 
 namespace cpu_emulator::operations {
-    class Add : public BaseOperation {
+    class JumpGreatEq : public Jump {
     public:
-        using BaseOperation::BaseOperation;
-
+        using Jump::Jump;
         void doIt(std::shared_ptr<cpu_emulator::CpuState>) override;
     };
 }

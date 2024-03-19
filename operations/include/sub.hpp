@@ -1,15 +1,15 @@
 #pragma once
 
 #include <memory>
-#include "baseOperation.hpp"
+#include "BaseOperation.hpp"
 #include "../../include/settings.hpp"
 #include "../../include/state.hpp"
 
 namespace cpu_emulator::operations {
-    class Sub : public baseOperation {
+    class Sub : public BaseOperation {
     public:
-        explicit Sub(std::shared_ptr<cpu_emulator::CpuState>);
+        using BaseOperation::BaseOperation;
 
-        void doIt() override;
+        void doIt(std::shared_ptr<cpu_emulator::CpuState>) override;
     };
 }

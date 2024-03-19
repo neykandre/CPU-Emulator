@@ -14,7 +14,7 @@ namespace cpu_emulator {
     unknown_command::unknown_command(const std::string& message)
             : preprocess_error(message) {}
 
-    invalid_argument::invalid_argument(const std::string& message)
+    invalid_argument_type::invalid_argument_type(const std::string& message)
             : preprocess_error(message) {}
 
     begin_absence::begin_absence(const std::string& message)
@@ -24,5 +24,8 @@ namespace cpu_emulator {
             : preprocess_error(message) {}
 
     incorrect_order::incorrect_order(const std::string& message)
+            : preprocess_error(message) {}
+
+    invalid_label::invalid_label(const std::string& message)
             : preprocess_error(message) {}
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "baseOperation.hpp"
+#include "BaseOperation.hpp"
 #include "pushStack.hpp"
 #include "popStack.hpp"
 #include "pushRegister.hpp"
@@ -13,3 +13,10 @@
 #include "out.hpp"
 #include "begin.hpp"
 #include "end.hpp"
+#include "jump.hpp"
+#include "jumpEq.hpp"
+#include "jumpNe.hpp"
+#include "jumpGreat.hpp"
+#include "jumpGreatEq.hpp"
+#include "jumpLess.hpp"
+#include "jumpLessEq.hpp"

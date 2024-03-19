@@ -23,6 +23,13 @@ namespace cpu_emulator {
         label,
         begin,
         end,
+        jump,
+        jumpEq,
+        jumpNe,
+        jumpGr,
+        jumpGrEq,
+        jumpLes,
+        jumpLesEq,
         eof
     };
 
@@ -31,12 +38,12 @@ namespace cpu_emulator {
         reg,
         value,
         label,
-        _count
+        label_idx
     };
 
     struct argToken {
         argType type{argType::unknown};
-        std::variant<enum_registers, value_type, std::string> arg;
+        std::variant<enum_registers, value_type, std::string, size_t> arg;
     };
 
     struct Instruction {

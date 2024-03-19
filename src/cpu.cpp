@@ -8,22 +8,24 @@ namespace cpu_emulator {
     }
 
     void Cpu::exec() {
-        Preprocessor preprocessor(ptr_state_, file_path_);
+        Preprocessor preprocessor(file_path_);
         try {
             preprocessor.process();
-            preprocessed_ = true;
+            successful_preprocessed_ = true;
         }
         catch (const preprocess_error& e) {
+            std::cerr << "PREPROCESS ERROR" << std::endl;
             std::cerr << e.what() << std::endl;
         }
 
-        if (preprocessed_) {
+        if (successful_preprocessed_) {
             operations_tape_ = preprocessor.getOperations();
+            ptr_state_->head = preprocessor.getStartPos();
 
-            operations_tape_[ptr_state_->head]->doIt();
-            while (ptr_state_->is_running_) {
+            operations_tape_[ptr_state_->head]->doIt(ptr_state_);
+            while (ptr_state_->is_running) {
                 ptr_state_->head++;
-                operations_tape_[ptr_state_->head]->doIt();
+                operations_tape_[ptr_state_->head]->doIt(ptr_state_);
             }
         }
     }

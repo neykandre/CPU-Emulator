@@ -11,9 +11,9 @@ namespace cpu_emulator {
     private:
         std::shared_ptr<CpuState> ptr_state_{std::make_shared<CpuState>()};
         std::string file_path_;
-        bool preprocessed_{false};
+        bool successful_preprocessed_{false};
 
-        std::vector<std::shared_ptr<operations::baseOperation>> operations_tape_;
+        std::vector<std::shared_ptr<operations::BaseOperation>> operations_tape_;
 
     public:
 

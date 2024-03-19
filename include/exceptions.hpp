@@ -9,8 +9,6 @@ namespace cpu_emulator {
 
     protected:
         std::string message;
-
-
     };
 
     struct too_many_args : public preprocess_error {
@@ -25,8 +23,8 @@ namespace cpu_emulator {
         explicit unknown_command(const std::string&);
     };
 
-    struct invalid_argument : public preprocess_error {
-        explicit invalid_argument(const std::string&);
+    struct invalid_argument_type : public preprocess_error {
+        explicit invalid_argument_type(const std::string&);
     };
 
     struct begin_absence : public preprocess_error {
@@ -39,5 +37,9 @@ namespace cpu_emulator {
 
     struct incorrect_order : public preprocess_error {
         explicit incorrect_order(const std::string&);
+    };
+
+    struct invalid_label : public preprocess_error {
+        explicit invalid_label(const std::string&);
     };
 }

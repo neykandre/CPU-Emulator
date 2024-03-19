@@ -20,6 +20,6 @@ namespace cpu_emulator {
 
         stack_lib::Stack<value_type> stack;
 
-        bool is_running_;
+        bool is_running;
     };
 }

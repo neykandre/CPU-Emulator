@@ -1,0 +1,24 @@
+begin
+
+in
+
+push 1
+popr eax
+
+push 1
+
+while:
+    popr ebx
+    pushr ebx
+    pushr eax
+    mul
+    popr eax
+    pushr ebx
+    push 1
+    add
+jbe while
+
+pushr eax
+out
+
+end
