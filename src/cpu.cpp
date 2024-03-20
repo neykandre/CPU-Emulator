@@ -4,6 +4,7 @@
 
 namespace cpu_emulator {
     void Cpu::exec(const std::string& file_path) {
+        successful_preprocessed_ = false;
         Preprocessor preprocessor(file_path);
         try {
             preprocessor.process();
@@ -11,9 +12,6 @@ namespace cpu_emulator {
         }
         catch (const preprocess_error& e) {
             std::cerr << "PREPROCESS ERROR" << std::endl;
-            std::cerr << e.what() << std::endl;
-        }
-        catch (const stack_lib::empty_access& e) {
             std::cerr << e.what() << std::endl;
         }
 
@@ -30,10 +28,16 @@ namespace cpu_emulator {
     }
 
     void Cpu::execBinary(const std::string& bin_path) {
-        Serializer serializer;
-        auto head_vec = serializer.deserialize(bin_path);
-        ptr_state_->head = head_vec.first;
-        operations_tape_ = head_vec.second;
+        try {
+            Serializer serializer;
+            auto head_vec = serializer.deserialize(bin_path);
+            ptr_state_->head = head_vec.first;
+            operations_tape_ = head_vec.second;
+        }
+        catch (const no_file& e) {
+            std::cerr << "\nDESERIALIZE ERROR" << std::endl;
+            std::cerr << e.what() << std::endl;
+        }
 
         operations_tape_[ptr_state_->head]->doIt(ptr_state_);
         while (ptr_state_->is_running) {

@@ -10,6 +10,8 @@ namespace cpu_emulator {
     class Serializer {
         using base_op_ptr = std::shared_ptr<operations::BaseOperation>;
         using vec_op = std::vector<base_op_ptr>;
+
+        struct VisitorWrapper;
     public:
         void serialize(const std::string&);
 

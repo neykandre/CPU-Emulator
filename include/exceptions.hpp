@@ -44,4 +44,13 @@ namespace cpu_emulator {
     struct invalid_label : public preprocess_error {
         using preprocess_error::preprocess_error;
     };
+
+    struct no_file : public std::runtime_error {
+        explicit no_file(const std::string& message)
+                : std::runtime_error(message),
+                  message(message) {}
+
+    protected:
+        std::string message;
+    };
 }

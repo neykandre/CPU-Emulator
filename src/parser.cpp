@@ -1,4 +1,5 @@
 #include <iostream>
+#include "exceptBuilder.hpp"
 #include "../include/parser.hpp"
 
 namespace cpu_emulator {
@@ -6,6 +7,11 @@ namespace cpu_emulator {
     Instruction Parser::getInstruction() {
         if (!in_.is_open()) {
             in_.open(file_path_);
+            if (!in_.is_open()) {
+                    throw ExceptBuilder<no_file>()
+                            .setNote("No such file: " + file_path_)
+                            .get();
+            }
         }
 
         std::string line;

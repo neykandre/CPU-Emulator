@@ -1,9 +1,11 @@
 #include <memory>
+#include <iostream>
+#include "exceptBuilder.hpp"
 #include "../include/binSerializer.hpp"
 #include "../include/preprocessor.hpp"
 
 namespace cpu_emulator {
-    struct VisitorWrapper {
+    struct Serializer::VisitorWrapper {
         size_t operator()(const std::string&) {
             throw ExceptBuilder<invalid_argument_type>()
                     .setNote("Not size_t convertible type")
@@ -16,13 +18,29 @@ namespace cpu_emulator {
     };
 
     void Serializer::serialize(const std::string& src_path) {
-        Preprocessor preprocessor(src_path);
-        preprocessor.process();
-        size_t head = preprocessor.getStartPos();
-        std::vector<std::shared_ptr<operations::BaseOperation>> operations_tape = preprocessor.getOperations();
+        size_t head;
+        vec_op operations_tape;
+        try {
+            Preprocessor preprocessor(src_path);
+            preprocessor.process();
+            head = preprocessor.getStartPos();
+            operations_tape = preprocessor.getOperations();
+        }
+        catch (const preprocess_error& e) {
+            std::cerr << "\nSERIALIZE ERROR" << std::endl;
+            std::cerr << e.what() << std::endl;
+            return;
+        }
 
         std::string bin_file_name = std::regex_replace(src_path, file_name_regex_, "$&.bin");
         std::ofstream file(bin_file_name, std::ios::binary);
+
+        if(!file.is_open()) {
+            throw ExceptBuilder<no_file>()
+                    .setNote("Cannot create file in this directory: " + bin_file_name)
+                    .get();
+        }
+
         file.write(reinterpret_cast<char*>(&head), sizeof(head));
         for (const auto& operation: operations_tape) {
             commandType type = operation->getInstruction().type;
@@ -36,6 +54,13 @@ namespace cpu_emulator {
 
     std::pair<size_t, Serializer::vec_op> Serializer::deserialize(const std::string& bin_file) {
         std::ifstream file(bin_file, std::ios::binary);
+
+        if(!file.is_open()) {
+            throw ExceptBuilder<no_file>()
+                    .setNote("No such file: " + bin_file)
+                    .get();
+        }
+
         size_t head;
         file.read(reinterpret_cast<char*>(&head), sizeof(head));
 
