@@ -7,7 +7,8 @@ namespace cpu_emulator::operations {
     }
 
     void Jump::doIt(std::shared_ptr<cpu_emulator::CpuState> state_ptr) {
-        state_ptr->head = std::get<size_t>(instruction_.args[0].arg);
+        size_t op_idx = std::visit([](auto&& arg) {return static_cast<size_t>(arg);}, instruction_.args[0].arg);
+        state_ptr->head = op_idx;
     }
 
     bool Jump::isArgTypeValid() const {

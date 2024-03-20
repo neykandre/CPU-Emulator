@@ -7,7 +7,7 @@ namespace cpu_emulator::operations {
         value_type b = state_ptr->stack.top();
         state_ptr->stack.push(a);
         if (a != b) {
-            state_ptr->head = std::get<size_t>(instruction_.args[0].arg);
+            Jump::doIt(state_ptr);
         }
     }
 }

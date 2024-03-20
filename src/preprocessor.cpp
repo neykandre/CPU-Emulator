@@ -35,8 +35,14 @@ namespace cpu_emulator {
         Instruction instruction = parser.getInstruction();
         for (; instruction.type != commandType::eof; instruction = parser.getInstruction()) {
             if (instruction.type == commandType::label) {
-                //TODO exceptions
-                mapped_labels[std::get<std::string>(instruction.args[0].arg)] = operations_tape_.size();
+                if (instruction.args.size() != 1 || instruction.args[0].type != argType::label) {
+                    throw ExceptBuilder<preprocess_error>()
+                            .setLinePos(instruction.line_pos)
+                            .setLineText(instruction.src_string)
+                            .setNote("Failed while parsing. Invalid label definition.\n")
+                            .get();
+                }
+                mapped_labels[instruction.args[0].label] = operations_tape_.size();
             } else {
                 base_op_ptr new_operation = make_operation[instruction.type]();
 
@@ -44,7 +50,7 @@ namespace cpu_emulator {
                     throw ExceptBuilder<unknown_command>()
                             .setLinePos(instruction.line_pos)
                             .setLineText(instruction.src_string)
-                            .setNote("unknown command")
+                            .setNote("unknown command\n")
                             .get();
                 }
 
@@ -54,7 +60,7 @@ namespace cpu_emulator {
                     throw ExceptBuilder<too_many_args>()
                             .setLinePos(new_operation->getInstruction().line_pos)
                             .setLineText(new_operation->getInstruction().src_string)
-                            .setNote("too many arguments")
+                            .setNote("too many arguments\n")
                             .get();
                 }
 
@@ -62,7 +68,7 @@ namespace cpu_emulator {
                     throw ExceptBuilder<too_few_args>()
                             .setLinePos(new_operation->getInstruction().line_pos)
                             .setLineText(new_operation->getInstruction().src_string)
-                            .setNote("too few arguments")
+                            .setNote("too few arguments\n")
                             .get();
                 }
 
@@ -76,7 +82,7 @@ namespace cpu_emulator {
                     end_was_ = true;
                 } else if (instruction.type >= commandType::jump &&
                            instruction.type <= commandType::call) {
-                    std::string s = std::get<std::string>(new_operation->getInstruction().args[0].arg);
+                    std::string s = new_operation->getInstruction().args[0].label;
                     jumps.insert(std::make_pair(s, new_operation));
                 }
             }
@@ -87,7 +93,7 @@ namespace cpu_emulator {
                 throw ExceptBuilder<invalid_label>()
                         .setLinePos(rec.second->getInstruction().line_pos)
                         .setLineText(rec.second->getInstruction().src_string)
-                        .setNote("No such label to jump: " + rec.first)
+                        .setNote("No such label to jump: " + rec.first + "\n")
                         .get();
             }
             rec.second->getInstruction().args[0].type = argType::label_idx;

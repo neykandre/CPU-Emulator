@@ -22,14 +22,14 @@ namespace cpu_emulator {
         label,
         begin,
         end,
-        jump,
-        jumpEq,
-        jumpNe,
-        jumpGr,
-        jumpGrEq,
-        jumpLes,
-        jumpLesEq,
-        call,
+        jump,       // NOT CHANGEABLE ORDER
+        jumpEq,     // NOT CHANGEABLE ORDER
+        jumpNe,     // NOT CHANGEABLE ORDER
+        jumpGr,     // NOT CHANGEABLE ORDER
+        jumpGrEq,   // NOT CHANGEABLE ORDER
+        jumpLes,    // NOT CHANGEABLE ORDER
+        jumpLesEq,  // NOT CHANGEABLE ORDER
+        call,       // NOT CHANGEABLE ORDER
         ret,
         eof
     };
@@ -44,7 +44,8 @@ namespace cpu_emulator {
 
     struct argToken {
         argType type{argType::unknown};
-        std::variant<enum_registers, value_type, std::string, size_t> arg;
+        std::string label;
+        std::variant<enum_registers, value_type, size_t> arg;
     };
 
     struct Instruction {

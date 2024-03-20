@@ -1,15 +1,63 @@
-#include <iostream>
 #include "exceptBuilder.hpp"
 #include "../include/parser.hpp"
 
 namespace cpu_emulator {
+
+    std::map<std::string, commandType> Parser::mapped_command_type = {
+            {"push",  commandType::push},
+            {"pop",   commandType::pop},
+            {"pushr", commandType::pushR},
+            {"popr",  commandType::popR},
+            {"add",   commandType::add},
+            {"sub",   commandType::sub},
+            {"mul",   commandType::mul},
+            {"div",   commandType::div},
+            {"out",   commandType::out},
+            {"in",    commandType::in},
+            {"begin", commandType::begin},
+            {"end",   commandType::end},
+            {"jmp",   commandType::jump},
+            {"jeq",   commandType::jumpEq},
+            {"jne",   commandType::jumpNe},
+            {"ja",    commandType::jumpGr},
+            {"jae",   commandType::jumpGrEq},
+            {"jb",    commandType::jumpLes},
+            {"jbe",   commandType::jumpLesEq},
+            {"ret",   commandType::ret},
+            {"call",   commandType::call}
+    };
+
+    std::map<std::string, enum_registers> Parser::mapped_registers = {
+            {"eax", enum_registers::eax},
+            {"ebx", enum_registers::ebx},
+            {"ecx", enum_registers::ecx},
+            {"edx", enum_registers::edx}
+    };
+
+    std::vector<std::pair<std::regex, std::function<void(argToken&, const std::string&)>>> Parser::mapped_arg_regexes = {
+            {std::regex(R"(-?\d*\.?\d+)"), [](auto& arg_token, auto& s) {
+                arg_token.type = argType::value;
+                arg_token.arg = std::stoll(s);
+            }},
+            {std::regex(R"(e[a-d]x)"),     [](auto& arg_token, auto& s) {
+                arg_token.type = argType::reg;
+                arg_token.arg = mapped_registers[s];
+            }},
+            {std::regex(R"(\w+)"),         [](auto& arg_token, auto& s) {
+                arg_token.type = argType::label;
+                arg_token.label = s;
+            }},
+            {std::regex(R"(.+)"),          [](auto& arg_token, auto& s) {
+                arg_token.type = argType::unknown;
+            }}
+    };
 
     Instruction Parser::getInstruction() {
         if (!in_.is_open()) {
             in_.open(file_path_);
             if (!in_.is_open()) {
                     throw ExceptBuilder<no_file>()
-                            .setNote("No such file: " + file_path_)
+                            .setNote("No such file: " + file_path_ + "\n")
                             .get();
             }
         }
@@ -48,12 +96,10 @@ namespace cpu_emulator {
                          ->second(cur_arg, cur_iter->str());
             args.push_back(cur_arg);
         }
-
-        Instruction ret_instruction{.type = type,
+        return {.type = type,
                 .args = std::move(args),
                 .line_pos = file_line_pos_,
                 .src_string = line};
-        return ret_instruction;
     }
 
     Parser::Parser(const std::string& path) {

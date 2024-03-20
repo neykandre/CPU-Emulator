@@ -27,7 +27,7 @@ namespace cpu_emulator {
             operations_tape = preprocessor.getOperations();
         }
         catch (const preprocess_error& e) {
-            std::cerr << "\nSERIALIZE ERROR" << std::endl;
+            std::cerr << "SERIALIZE ERROR" << std::endl;
             std::cerr << e.what() << std::endl;
             return;
         }
@@ -61,12 +61,16 @@ namespace cpu_emulator {
                     .get();
         }
 
+        file.seekg(0, std::ios::end);
+        size_t size = static_cast<size_t>(file.tellg());
+        file.seekg(0, std::ios::beg);
+
         size_t head;
         file.read(reinterpret_cast<char*>(&head), sizeof(head));
 
         vec_op operation_tape;
 
-        while (!file.eof()) {
+        while (file.tellg() < size) {
             commandType type;
             file.read(reinterpret_cast<char*>(&type), sizeof(type));
             base_op_ptr new_operation = Preprocessor::makeOperation(type);
@@ -75,7 +79,7 @@ namespace cpu_emulator {
             while (args_num--) {
                 size_t cur_arg_val;
                 file.read(reinterpret_cast<char*>(&cur_arg_val), sizeof(cur_arg_val));
-                args.push_back({.type = argType::unknown, .arg = cur_arg_val});
+                args.push_back({.label = "", .arg = cur_arg_val});
             }
             Instruction i = {.type = type, .args = args};
             new_operation->moveInstruction(i);
