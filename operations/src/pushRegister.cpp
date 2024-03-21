@@ -4,6 +4,7 @@ namespace cpu_emulator::operations {
     PushR::PushR()
             : BaseOperation() {
         required_args_num_ = 1;
+        instruction_.args.push_back({.arg = enum_registers()});
     }
 
     void PushR::doIt(std::shared_ptr<cpu_emulator::CpuState> state_ptr) {

@@ -5,7 +5,7 @@
 #include "stack.hpp"
 
 namespace cpu_emulator {
-    enum class enum_registers {
+    enum class enum_registers : char {
         eax,
         ebx,
         ecx,

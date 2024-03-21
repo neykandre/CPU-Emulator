@@ -35,7 +35,7 @@ namespace cpu_emulator {
         std::string bin_file_name = std::regex_replace(src_path, file_name_regex_, "$&.bin");
         std::ofstream file(bin_file_name, std::ios::binary);
 
-        if(!file.is_open()) {
+        if (!file.is_open()) {
             throw ExceptBuilder<no_file>()
                     .setNote("Cannot create file in this directory: " + bin_file_name)
                     .get();
@@ -46,8 +46,12 @@ namespace cpu_emulator {
             commandType type = operation->getInstruction().type;
             file.write(reinterpret_cast<char*>(&type), sizeof(type));
             for (const auto& arg: operation->getInstruction().args) {
-                size_t arg_val = std::visit(VisitorWrapper{}, arg.arg);
-                file.write(reinterpret_cast<char*>(&arg_val), sizeof(size_t));
+                std::visit([&file](auto& arg_val) {
+                    auto arg_val_size_t = static_cast<size_t>(arg_val);
+                    file.write(reinterpret_cast<char*>(&arg_val_size_t), sizeof(arg_val));
+                }, arg.arg);
+//                size_t arg_val = std::visit(VisitorWrapper{}, arg.arg);
+//                file.write(reinterpret_cast<char*>(&arg_val), sizeof(size_t));
             }
         }
     }
@@ -55,7 +59,7 @@ namespace cpu_emulator {
     std::pair<size_t, Serializer::vec_op> Serializer::deserialize(const std::string& bin_file) {
         std::ifstream file(bin_file, std::ios::binary);
 
-        if(!file.is_open()) {
+        if (!file.is_open()) {
             throw ExceptBuilder<no_file>()
                     .setNote("No such file: " + bin_file)
                     .get();
@@ -76,13 +80,9 @@ namespace cpu_emulator {
             base_op_ptr new_operation = Preprocessor::makeOperation(type);
             size_t args_num = new_operation->getReqArgsNum();
             std::vector<argToken> args;
-            while (args_num--) {
-                size_t cur_arg_val;
-                file.read(reinterpret_cast<char*>(&cur_arg_val), sizeof(cur_arg_val));
-                args.push_back({.label = "", .arg = cur_arg_val});
+            for (size_t i = 0; i < args_num; ++i) {
+                std::visit([&file](auto&& arg) { file.read(reinterpret_cast<char*>(&arg), sizeof(arg));}, new_operation->getInstruction().args[i].arg);
             }
-            Instruction i = {.type = type, .args = args};
-            new_operation->moveInstruction(i);
             operation_tape.push_back(new_operation);
         }
 

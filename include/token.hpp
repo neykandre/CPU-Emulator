@@ -44,7 +44,7 @@ namespace cpu_emulator {
 
     struct argToken {
         argType type{argType::unknown};
-        std::string label;
+        std::string label{""};
         std::variant<enum_registers, value_type, size_t> arg;
     };
 

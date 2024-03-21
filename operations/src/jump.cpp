@@ -4,10 +4,11 @@ namespace cpu_emulator::operations {
     Jump::Jump()
             : BaseOperation() {
         required_args_num_ = 1;
+        instruction_.args.push_back({.arg = size_t()});
     }
 
     void Jump::doIt(std::shared_ptr<cpu_emulator::CpuState> state_ptr) {
-        size_t op_idx = std::visit([](auto&& arg) {return static_cast<size_t>(arg);}, instruction_.args[0].arg);
+        size_t op_idx = std::visit([](auto&& arg) { return static_cast<size_t>(arg); }, instruction_.args[0].arg);
         state_ptr->head = op_idx;
     }
 
