@@ -10,13 +10,13 @@ namespace cpu_emulator {
     class Serializer {
         using base_op_ptr = std::shared_ptr<operations::BaseOperation>;
         using vec_op = std::vector<base_op_ptr>;
-
-        struct VisitorWrapper;
     public:
-        void serialize(const std::string&);
+        Serializer() = delete;
 
-        std::pair<size_t, vec_op> deserialize(const std::string&);
+        static void serialize(const std::string&);
+
+        static std::pair<size_t, vec_op> deserialize(const std::string&);
     private:
-        std::regex file_name_regex_ = std::regex(R"([\w\.]+$)");
+        static std::regex file_name_regex_;
     };
 }

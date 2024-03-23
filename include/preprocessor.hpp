@@ -3,11 +3,8 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "parser.hpp"
 #include "settings.hpp"
-#include "state.hpp"
 #include "token.hpp"
-#include "exceptBuilder.hpp"
 #include "../operations/include/operations.hpp"
 
 namespace cpu_emulator {
@@ -33,7 +30,7 @@ namespace cpu_emulator {
     public:
         Preprocessor() = delete;
 
-        Preprocessor(const std::string&); //NOLINT
+        explicit Preprocessor(const std::string&);
 
         void process();
 

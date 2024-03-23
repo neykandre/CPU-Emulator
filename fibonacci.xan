@@ -1,0 +1,38 @@
+begin
+
+push 0
+out
+push 0
+push 1
+out
+push 1
+
+push 2
+popr eax
+
+while:
+    pushr eax
+    push 40
+    jbe while_end
+    pop
+    pop
+    popr ebx
+    popr ecx
+    pushr ebx
+    pushr ecx
+    pushr ebx
+    add
+    popr ebx
+    pushr ebx
+    pushr ebx
+    out
+    pushr eax
+    push 1
+    add
+    popr eax
+    jmp while
+while_end:
+pop
+pop
+
+end

@@ -5,8 +5,7 @@
 int main(int argc, char* argv[]){
     if (argc == 3) {
         if (std::string(argv[1]) == "--mk_bin" || std::string(argv[1]) == "-mb") {
-            cpu_emulator::Serializer serializer;
-            serializer.serialize(argv[2]);
+            cpu_emulator::Serializer::serialize(argv[2]);
         }
         else if (std::string(argv[1]) == "--run_bin" || std::string(argv[1]) == "-rb") {
             cpu_emulator::Cpu cpu;

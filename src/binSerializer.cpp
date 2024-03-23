@@ -1,21 +1,12 @@
 #include <memory>
 #include <iostream>
+#include <fstream>
 #include "exceptBuilder.hpp"
 #include "../include/binSerializer.hpp"
 #include "../include/preprocessor.hpp"
 
 namespace cpu_emulator {
-    struct Serializer::VisitorWrapper {
-        size_t operator()(const std::string&) {
-            throw ExceptBuilder<invalid_argument_type>()
-                    .setNote("Not size_t convertible type")
-                    .get();
-        }
-
-        size_t operator()(auto& arg) {
-            return static_cast<size_t>(arg);
-        }
-    };
+    std::regex Serializer::file_name_regex_ = std::regex(R"([\w\.]+$)");
 
     void Serializer::serialize(const std::string& src_path) {
         size_t head;
@@ -27,7 +18,7 @@ namespace cpu_emulator {
             operations_tape = preprocessor.getOperations();
         }
         catch (const preprocess_error& e) {
-            std::cerr << "SERIALIZE ERROR" << std::endl;
+            std::cerr << "SERIALIZE ERROR\n" << std::endl;
             std::cerr << e.what() << std::endl;
             return;
         }
@@ -50,8 +41,6 @@ namespace cpu_emulator {
                     auto arg_val_size_t = static_cast<size_t>(arg_val);
                     file.write(reinterpret_cast<char*>(&arg_val_size_t), sizeof(arg_val));
                 }, arg.arg);
-//                size_t arg_val = std::visit(VisitorWrapper{}, arg.arg);
-//                file.write(reinterpret_cast<char*>(&arg_val), sizeof(size_t));
             }
         }
     }
@@ -81,7 +70,9 @@ namespace cpu_emulator {
             size_t args_num = new_operation->getReqArgsNum();
             std::vector<argToken> args;
             for (size_t i = 0; i < args_num; ++i) {
-                std::visit([&file](auto&& arg) { file.read(reinterpret_cast<char*>(&arg), sizeof(arg));}, new_operation->getInstruction().args[i].arg);
+                std::visit([&file](auto&& arg) {
+                               file.read(reinterpret_cast<char*>(&arg), sizeof(arg));
+                           },new_operation->getInstruction().args[i].arg);
             }
             operation_tape.push_back(new_operation);
         }
