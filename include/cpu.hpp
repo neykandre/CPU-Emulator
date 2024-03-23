@@ -10,7 +10,6 @@ namespace cpu_emulator {
     class Cpu {
     private:
         std::shared_ptr<CpuState> ptr_state_{std::make_shared<CpuState>()};
-        bool successful_preprocessed_{false};
 
         std::vector<std::shared_ptr<operations::BaseOperation>> operations_tape_;
 

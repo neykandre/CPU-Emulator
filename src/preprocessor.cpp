@@ -1,3 +1,6 @@
+#include "parser.hpp"
+#include "state.hpp"
+#include "exceptBuilder.hpp"
 #include "../include/preprocessor.hpp"
 
 namespace cpu_emulator {

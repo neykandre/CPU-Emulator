@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <stdexcept>
 #include <fstream>
 #include <regex>
 #include "state.hpp"
@@ -27,7 +26,7 @@ namespace cpu_emulator {
 
         Parser() = delete;
 
-        Parser(const std::string&); //NOLINT
+        explicit Parser(const std::string&);
 
         Instruction getInstruction();
 
